@@ -34,6 +34,23 @@ galleriesRouter.get('/', async (req, res, next) => {
   }
 });
 
+galleriesRouter.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    try {
+      new Types.ObjectId(id);
+    } catch {
+      return res.status(404).send({ error: 'Wrong ID!' });
+    }
+
+    const response = await Gallery.findById(id);
+    return res.send(response);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 galleriesRouter.post(
   '/',
   auth,

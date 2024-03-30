@@ -1,32 +1,36 @@
 import { Gallery, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { deletePhoto, fetchGallery } from './galleryThunks';
+import { deletePhoto, fetchGallery, fetchOne } from './galleryThunks';
 
 interface GalleryState {
   items: Gallery[];
   item: Gallery | null;
   fetchLoading: boolean;
-  fetchOneLoading: boolean;
   createLoading: boolean;
   createError: ValidationError | null;
   deleteLoading: boolean;
+  preview: boolean;
 }
 
 const initialState: GalleryState = {
   items: [],
   item: null,
   fetchLoading: false,
-  fetchOneLoading: false,
   createLoading: false,
   createError: null,
   deleteLoading: false,
+  preview: false,
 };
 
 export const gallerySlice = createSlice({
   name: 'gallery',
   initialState,
-  reducers: {},
+  reducers: {
+    setPreview: (state, { payload }) => {
+      state.preview = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGallery.pending, (state) => {
@@ -37,6 +41,18 @@ export const gallerySlice = createSlice({
         state.items = photos;
       })
       .addCase(fetchGallery.rejected, (state) => {
+        state.fetchLoading = false;
+      });
+
+    builder
+      .addCase(fetchOne.pending, (state) => {
+        state.fetchLoading = true;
+      })
+      .addCase(fetchOne.fulfilled, (state, { payload: photo }) => {
+        state.fetchLoading = false;
+        state.item = photo;
+      })
+      .addCase(fetchOne.rejected, (state) => {
         state.fetchLoading = false;
       });
 
@@ -55,12 +71,16 @@ export const gallerySlice = createSlice({
 
 export const galleryReducer = gallerySlice.reducer;
 
+export const { setPreview } = gallerySlice.actions;
+
 export const selectGallery = (state: RootState) => state.gallery.items;
-export const selectPreview = (state: RootState) => state.gallery.item;
+
+export const selectOnePhoto = (state: RootState) => state.gallery.item;
 export const selectFetchLoading = (state: RootState) =>
   state.gallery.fetchLoading;
-export const selectFetchOneLoading = (state: RootState) =>
-  state.gallery.fetchOneLoading;
+
+export const selectPreview = (state: RootState) => state.gallery.preview;
+
 export const selectCreateLoading = (state: RootState) =>
   state.gallery.createLoading;
 export const selectCreateError = (state: RootState) =>

@@ -34,6 +34,7 @@ const AppToolbar = () => {
         borderBottom: '1px solid #efefef',
         mt: 2,
         mb: '50px',
+        zIndex: 1,
       }}
     >
       <Toolbar disableGutters>

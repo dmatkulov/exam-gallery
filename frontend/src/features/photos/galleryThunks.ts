@@ -12,6 +12,16 @@ export const fetchGallery = createAsyncThunk<Gallery[]>(
   },
 );
 
+export const fetchOne = createAsyncThunk<Gallery, string>(
+  'gallery/fetchOne',
+  async (id: string) => {
+    const response = await axiosApi.get<Gallery>(
+      `${axiosRoutes.gallery}/${id}`,
+    );
+    return response.data;
+  },
+);
+
 export const deletePhoto = createAsyncThunk<void, string>(
   'gallery/delete',
   async (id) => {

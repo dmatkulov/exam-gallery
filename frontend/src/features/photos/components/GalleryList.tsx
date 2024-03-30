@@ -7,8 +7,8 @@ import { apiURL, routes } from '../../../utils/constants';
 import noCoverImage from '../../../assets/images/artist-image-no-available.jpg';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../users/usersSlice';
-import { deletePhoto, fetchGallery } from '../galleryThunks';
-import { selectDeleteLoading } from '../gallerySlice';
+import { deletePhoto, fetchGallery, fetchOne } from '../galleryThunks';
+import { selectDeleteLoading, setPreview } from '../gallerySlice';
 import { NavLink } from 'react-router-dom';
 
 interface Props {
@@ -39,10 +39,21 @@ const GalleryList: React.FC<Props> = ({ item }) => {
     await dispatch(fetchGallery()).unwrap();
   }, [dispatch, item._id]);
 
+  const fetchPreview = async (id: string) => {
+    await dispatch(fetchOne(id));
+    dispatch(setPreview(true));
+  };
+
   return (
     item && (
       <ImageListItem key={item._id}>
-        <img src={image} alt={item.title} loading="lazy" />
+        <img
+          onClick={() => fetchPreview(item._id)}
+          style={{ cursor: 'pointer' }}
+          src={image}
+          alt={item.title}
+          loading="lazy"
+        />
         <ImageListItemBar
           title={item.title}
           subtitle={
