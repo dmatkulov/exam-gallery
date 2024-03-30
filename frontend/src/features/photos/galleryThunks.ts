@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Gallery } from '../../types';
+import { Gallery, GalleryResponse } from '../../types';
 import { axiosRoutes } from '../../utils/constants';
 import axiosApi from '../../utils/axiosApi';
 
@@ -7,6 +7,17 @@ export const fetchGallery = createAsyncThunk<Gallery[]>(
   'gallery/Fetch',
   async () => {
     const response = await axiosApi.get<Gallery[]>(axiosRoutes.gallery);
+
+    return response.data ?? [];
+  },
+);
+
+export const fetchByUser = createAsyncThunk<GalleryResponse, string>(
+  'gallery/fetchByUser',
+  async (id) => {
+    const response = await axiosApi.get<GalleryResponse>(
+      axiosRoutes.gallery + '?author=' + id,
+    );
 
     return response.data ?? [];
   },

@@ -8,12 +8,19 @@ export interface User {
 
 export interface Gallery {
   _id: string;
-  user: {
-    _id: string;
-    displayName: string;
-  };
+  user: UserInfo;
   title: string;
   image: string;
+}
+
+export interface GalleryResponse {
+  user: UserInfo;
+  result: Gallery[];
+}
+
+export interface UserInfo {
+  _id: string;
+  displayName: string;
 }
 
 export interface RegisterMutation {

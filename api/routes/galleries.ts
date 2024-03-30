@@ -1,18 +1,18 @@
 import { Router } from 'express';
 import Gallery from '../models/Gallery';
 import { imagesUpload } from '../multer';
-import mongoose, { FilterQuery, Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { GalleryMutation } from '../types';
 import permit from '../middleware/permit';
 import auth, { RequestWithUser } from '../middleware/auth';
+import User from '../models/User';
 
 const galleriesRouter = Router();
 
 galleriesRouter.get('/', async (req, res, next) => {
   try {
     const authorId = req.query.author as string;
-    let filter: FilterQuery<GalleryMutation> = {};
-
+    let response;
     if (authorId) {
       try {
         new Types.ObjectId(authorId);
@@ -20,14 +20,20 @@ galleriesRouter.get('/', async (req, res, next) => {
         return res.status(404).send({ error: 'Wrong ID!' });
       }
 
-      filter = { user: authorId };
+      const result = await Gallery.find({ user: authorId }).populate({
+        path: 'user',
+        select: 'displayName',
+      });
+
+      const user = await User.findById(authorId).select('displayName');
+
+      return res.send({ user, result });
     } else {
-      filter = {};
+      response = await Gallery.find().populate({
+        path: 'user',
+        select: 'displayName',
+      });
     }
-    const response = await Gallery.find(filter).populate({
-      path: 'user',
-      select: 'displayName',
-    });
     return res.send(response);
   } catch (e) {
     return next(e);

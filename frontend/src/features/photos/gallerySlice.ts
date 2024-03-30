@@ -1,11 +1,17 @@
-import { Gallery, ValidationError } from '../../types';
+import { Gallery, UserInfo, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { deletePhoto, fetchGallery, fetchOne } from './galleryThunks';
+import {
+  deletePhoto,
+  fetchByUser,
+  fetchGallery,
+  fetchOne,
+} from './galleryThunks';
 
 interface GalleryState {
   items: Gallery[];
   item: Gallery | null;
+  author: UserInfo | null;
   fetchLoading: boolean;
   createLoading: boolean;
   createError: ValidationError | null;
@@ -16,6 +22,7 @@ interface GalleryState {
 const initialState: GalleryState = {
   items: [],
   item: null,
+  author: null,
   fetchLoading: false,
   createLoading: false,
   createError: null,
@@ -41,6 +48,19 @@ export const gallerySlice = createSlice({
         state.items = photos;
       })
       .addCase(fetchGallery.rejected, (state) => {
+        state.fetchLoading = false;
+      });
+
+    builder
+      .addCase(fetchByUser.pending, (state) => {
+        state.fetchLoading = true;
+      })
+      .addCase(fetchByUser.fulfilled, (state, { payload: photos }) => {
+        state.fetchLoading = false;
+        state.items = photos.result;
+        state.author = photos.user;
+      })
+      .addCase(fetchByUser.rejected, (state) => {
         state.fetchLoading = false;
       });
 
@@ -80,6 +100,7 @@ export const selectFetchLoading = (state: RootState) =>
   state.gallery.fetchLoading;
 
 export const selectPreview = (state: RootState) => state.gallery.preview;
+export const selectAuthor = (state: RootState) => state.gallery.author;
 
 export const selectCreateLoading = (state: RootState) =>
   state.gallery.createLoading;
