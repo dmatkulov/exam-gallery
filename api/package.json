@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.ts",
     "lint": "eslint \"**/*.ts\"",
     "typecheck": "tsc --noemit",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "seed": "ts-node fixtures.ts"
   },
   "keywords": [],
   "author": "",
