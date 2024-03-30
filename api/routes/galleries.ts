@@ -2,7 +2,7 @@ import { Router } from 'express';
 import Gallery from '../models/Gallery';
 import { imagesUpload } from '../multer';
 import mongoose, { FilterQuery, Types } from 'mongoose';
-import { GalleryFields, GalleryMutation } from '../types';
+import { GalleryMutation } from '../types';
 import permit from '../middleware/permit';
 import auth, { RequestWithUser } from '../middleware/auth';
 
@@ -11,16 +11,24 @@ const galleriesRouter = Router();
 galleriesRouter.get('/', async (req, res, next) => {
   try {
     const authorId = req.query.author as string;
-    let filter: FilterQuery<GalleryFields>;
+    let filter: FilterQuery<GalleryMutation> = {};
 
     if (authorId) {
+      try {
+        new Types.ObjectId(authorId);
+      } catch {
+        return res.status(404).send({ error: 'Wrong ID!' });
+      }
+
       filter = { user: authorId };
     } else {
       filter = {};
     }
-
-    const images = await Gallery.find(filter);
-    return res.send(images);
+    const response = await Gallery.find(filter).populate({
+      path: 'user',
+      select: 'displayName',
+    });
+    return res.send(response);
   } catch (e) {
     return next(e);
   }

@@ -4,12 +4,12 @@ import { routes } from './utils/constants';
 import NotFound from './components/UI/NotFound/NotFound';
 import RegisterUser from './features/users/containers/RegisterUser';
 import LoginUser from './features/users/containers/LoginUser';
-import Gallery from './features/photos/Gallery';
+import Gallery from './features/photos/containers/Gallery';
 import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/users/usersSlice';
-import UserHome from './features/photos/UserHome';
-import NewPhoto from './features/photos/NewPhoto';
+import UserHome from './features/photos/containers/UserHome';
+import NewPhoto from './features/photos/containers/NewPhoto';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -20,19 +20,7 @@ function App() {
           <Route path={routes.register} element={<RegisterUser />} />
           <Route path={routes.login} element={<LoginUser />} />
           <Route path={routes.home} element={<Gallery />} />
-
-          <Route
-            path={routes.userHomePage}
-            element={
-              <ProtectedRoute
-                isAllowed={
-                  user && (user.role === 'user' || user.role === 'admin')
-                }
-              >
-                <UserHome />
-              </ProtectedRoute>
-            }
-          />
+          <Route path={routes.userHomePage + '/:id'} element={<UserHome />} />
 
           <Route
             path={routes.newPhoto}

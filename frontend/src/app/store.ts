@@ -9,6 +9,7 @@ import {
   persistStore,
 } from 'redux-persist';
 import { PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
+import { galleryReducer } from '../features/photos/gallerySlice';
 
 const usersPersistConfig = {
   key: 'gallery:users',
@@ -17,6 +18,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
+  gallery: galleryReducer,
 });
 
 export const store = configureStore({

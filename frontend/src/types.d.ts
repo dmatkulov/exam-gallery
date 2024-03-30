@@ -6,11 +6,14 @@ export interface User {
   role: string;
 }
 
-export interface Cocktail {
+export interface Gallery {
   _id: string;
-  name: string;
+  user: {
+    _id: string;
+    displayName: string;
+  };
+  title: string;
   image: string;
-  isPublished: boolean;
 }
 
 export interface RegisterMutation {
