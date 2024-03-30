@@ -4,7 +4,6 @@ import { IconButton, ImageListItemBar, styled } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Gallery } from '../../../types';
 import { apiURL, routes } from '../../../utils/constants';
-import noCoverImage from '../../../assets/images/artist-image-no-available.jpg';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../users/usersSlice';
 import { deletePhoto, fetchGallery, fetchOne } from '../galleryThunks';
@@ -18,7 +17,6 @@ interface Props {
 
 const Link = styled(NavLink)({
   color: 'inherit',
-  textDecoration: 'none',
   '&:hover': {
     color: 'inherit',
   },
@@ -29,12 +27,7 @@ const GalleryList: React.FC<Props> = ({ item, userPage = false }) => {
   const user = useAppSelector(selectUser);
   const isDeleting = useAppSelector(selectDeleteLoading);
 
-  let image = noCoverImage;
-
-  if (item.image) {
-    image = apiURL + '/' + item.image;
-  }
-
+  const image = apiURL + '/' + item.image;
   const handleDelete = useCallback(async () => {
     await dispatch(deletePhoto(item._id));
     await dispatch(fetchGallery()).unwrap();
@@ -60,7 +53,7 @@ const GalleryList: React.FC<Props> = ({ item, userPage = false }) => {
           subtitle={
             !userPage && (
               <span>
-                by:{' '}
+                by{' '}
                 <Link to={routes.userHomePage + '/' + item.user._id}>
                   {item.user.displayName}
                 </Link>

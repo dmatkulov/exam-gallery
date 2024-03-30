@@ -4,12 +4,12 @@ import { routes } from './utils/constants';
 import NotFound from './components/UI/NotFound/NotFound';
 import RegisterUser from './features/users/containers/RegisterUser';
 import LoginUser from './features/users/containers/LoginUser';
-import Gallery from './features/photos/containers/Gallery';
+import Gallery from './features/gallery/containers/Gallery';
 import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/users/usersSlice';
-import UserGallery from './features/photos/containers/UserGallery';
-import NewPhoto from './features/photos/containers/NewPhoto';
+import UserGallery from './features/gallery/containers/UserGallery';
+import NewPhoto from './features/gallery/containers/NewPhoto';
 
 function App() {
   const user = useAppSelector(selectUser);

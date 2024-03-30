@@ -18,6 +18,7 @@ import {
 import { selectUser } from '../../users/usersSlice';
 import { routes } from '../../../utils/constants';
 import GalleryList from '../components/GalleryList';
+import PhotoPreview from '../components/PhotoPreview';
 
 const UserGallery: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -49,6 +50,9 @@ const UserGallery: React.FC = () => {
         )}
       </Stack>
       {isLoading && <CircularProgress />}
+
+      {<PhotoPreview />}
+
       <Box sx={{ height: 800, overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {gallery.map((item) => (

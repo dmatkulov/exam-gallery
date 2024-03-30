@@ -14,6 +14,7 @@ interface GalleryState {
   item: Gallery | null;
   author: UserInfo | null;
   fetchLoading: boolean;
+  fetchOneLoading: boolean;
   createLoading: boolean;
   createError: ValidationError | null;
   deleteLoading: boolean;
@@ -25,6 +26,7 @@ const initialState: GalleryState = {
   item: null,
   author: null,
   fetchLoading: false,
+  fetchOneLoading: false,
   createLoading: false,
   createError: null,
   deleteLoading: false,
@@ -67,14 +69,14 @@ export const gallerySlice = createSlice({
 
     builder
       .addCase(fetchOne.pending, (state) => {
-        state.fetchLoading = true;
+        state.fetchOneLoading = true;
       })
       .addCase(fetchOne.fulfilled, (state, { payload: photo }) => {
-        state.fetchLoading = false;
+        state.fetchOneLoading = true;
         state.item = photo;
       })
       .addCase(fetchOne.rejected, (state) => {
-        state.fetchLoading = false;
+        state.fetchOneLoading = false;
       });
 
     builder
@@ -108,6 +110,9 @@ export const selectGallery = (state: RootState) => state.gallery.items;
 export const selectOnePhoto = (state: RootState) => state.gallery.item;
 export const selectFetchLoading = (state: RootState) =>
   state.gallery.fetchLoading;
+
+export const selectFetchOneLoading = (state: RootState) =>
+  state.gallery.fetchOneLoading;
 export const selectPreview = (state: RootState) => state.gallery.preview;
 export const selectAuthor = (state: RootState) => state.gallery.author;
 export const selectCreateLoading = (state: RootState) =>

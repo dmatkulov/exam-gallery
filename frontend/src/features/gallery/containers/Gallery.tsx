@@ -4,6 +4,7 @@ import { selectFetchLoading, selectGallery } from '../gallerySlice';
 import { Box, CircularProgress, ImageList } from '@mui/material';
 import { fetchGallery } from '../galleryThunks';
 import GalleryList from '../components/GalleryList';
+import PhotoPreview from '../components/PhotoPreview';
 
 const Gallery: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ const Gallery: React.FC = () => {
   return (
     <>
       {isLoading && <CircularProgress />}
+      {<PhotoPreview />}
       <Box sx={{ height: 800, overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {gallery.map((item) => (

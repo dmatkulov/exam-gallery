@@ -9,7 +9,7 @@ import {
   persistStore,
 } from 'redux-persist';
 import { PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
-import { galleryReducer } from '../features/photos/gallerySlice';
+import { galleryReducer } from '../features/gallery/gallerySlice';
 
 const usersPersistConfig = {
   key: 'gallery:users',
