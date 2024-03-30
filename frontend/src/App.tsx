@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Layout from './components/UI/Layout/Layout';
+import { Route, Routes } from 'react-router-dom';
+import { routes } from './utils/constants';
+import NotFound from './components/UI/NotFound/NotFound';
+import RegisterUser from './features/users/containers/RegisterUser';
+import LoginUser from './features/users/containers/LoginUser';
+import Gallery from './features/photos/Gallery';
+import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
+import { useAppSelector } from './app/hooks';
+import { selectUser } from './features/users/usersSlice';
+import UserHome from './features/photos/UserHome';
+import NewPhoto from './features/photos/NewPhoto';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const user = useAppSelector(selectUser);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Layout>
+        <Routes>
+          <Route path={routes.register} element={<RegisterUser />} />
+          <Route path={routes.login} element={<LoginUser />} />
+          <Route path={routes.home} element={<Gallery />} />
+
+          <Route
+            path={routes.userHomePage}
+            element={
+              <ProtectedRoute
+                isAllowed={
+                  user && (user.role === 'user' || user.role === 'admin')
+                }
+              >
+                <UserHome />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path={routes.newPhoto}
+            element={
+              <ProtectedRoute
+                isAllowed={
+                  user && (user.role === 'user' || user.role === 'admin')
+                }
+              >
+                <NewPhoto />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path={routes.notFound} element={<NotFound />} />
+        </Routes>
+      </Layout>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
