@@ -13,7 +13,7 @@ export interface Gallery {
   image: string;
 }
 
-export interface GalleryResponse {
+export interface UserGallery {
   user: UserInfo;
   result: Gallery[];
 }
@@ -21,6 +21,12 @@ export interface GalleryResponse {
 export interface UserInfo {
   _id: string;
   displayName: string;
+}
+
+//mutations
+export interface GalleryMutation {
+  title: string;
+  image: File | null;
 }
 
 export interface RegisterMutation {

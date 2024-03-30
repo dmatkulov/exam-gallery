@@ -4,9 +4,9 @@ export const GOOGLE_CLIENT_ID = import.meta.env[
 ] as string;
 
 export const axiosRoutes = {
-  users: '/auth',
-  sessions: '/auth/sessions',
-  google: '/auth/google',
+  users: '/users',
+  sessions: '/users/sessions',
+  google: '/users/google',
   gallery: '/gallery',
 };
 

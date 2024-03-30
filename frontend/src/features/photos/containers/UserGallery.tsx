@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   selectAuthor,
@@ -16,10 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 import { selectUser } from '../../users/usersSlice';
-import UserGalleryList from '../components/UserGalleryList';
+import { routes } from '../../../utils/constants';
+import GalleryList from '../components/GalleryList';
 
 const UserGallery: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const author = useAppSelector(selectAuthor);
 
@@ -34,17 +36,23 @@ const UserGallery: React.FC = () => {
 
   return (
     <>
-      <Stack>
+      <Stack direction="row" alignItems="center" mb={6}>
         {author && (
-          <Typography variant="h3">{author.displayName}'s gallery</Typography>
+          <Typography variant="h3" sx={{ flexGrow: 1 }}>
+            {author.displayName}'s gallery
+          </Typography>
         )}
-        {author && author._id === user?._id && <Button>Delete</Button>}
+        {author && author._id === user?._id && (
+          <Button variant="contained" onClick={() => navigate(routes.newPhoto)}>
+            Upload a photo
+          </Button>
+        )}
       </Stack>
       {isLoading && <CircularProgress />}
-      <Box>
+      <Box sx={{ height: 800, overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {gallery.map((item) => (
-            <UserGalleryList key={item._id} item={item} />
+            <GalleryList key={item._id} item={item} userPage />
           ))}
         </ImageList>
       </Box>

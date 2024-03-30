@@ -62,11 +62,11 @@ const UserMenu: React.FC<Props> = ({ user }) => {
           horizontal: 'right',
         }}
       >
-        {user && user.role === 'user' && (
-          <MenuItem onClick={() => navigate(routes.userHomePage + '/:id')}>
-            My gallery
-          </MenuItem>
-        )}
+        <MenuItem
+          onClick={() => navigate(`${routes.userHomePage}/${user._id}`)}
+        >
+          My gallery
+        </MenuItem>
         <MenuItem onClick={() => navigate(routes.newPhoto)}>
           Upload new photo
         </MenuItem>

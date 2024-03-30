@@ -13,6 +13,7 @@ import { NavLink } from 'react-router-dom';
 
 interface Props {
   item: Gallery;
+  userPage?: boolean;
 }
 
 const Link = styled(NavLink)({
@@ -23,7 +24,7 @@ const Link = styled(NavLink)({
   },
 });
 
-const GalleryList: React.FC<Props> = ({ item }) => {
+const GalleryList: React.FC<Props> = ({ item, userPage = false }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isDeleting = useAppSelector(selectDeleteLoading);
@@ -57,12 +58,14 @@ const GalleryList: React.FC<Props> = ({ item }) => {
         <ImageListItemBar
           title={item.title}
           subtitle={
-            <span>
-              by:{' '}
-              <Link to={routes.userHomePage + '/' + item.user._id}>
-                {item.user.displayName}
-              </Link>
-            </span>
+            !userPage && (
+              <span>
+                by:{' '}
+                <Link to={routes.userHomePage + '/' + item.user._id}>
+                  {item.user.displayName}
+                </Link>
+              </span>
+            )
           }
           sx={{
             background:

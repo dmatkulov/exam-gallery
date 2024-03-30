@@ -2,13 +2,14 @@ import { googleLogin } from '../usersThunks';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../app/hooks';
 import { GoogleLogin } from '@react-oauth/google';
+import { routes } from '../../../utils/constants';
 
 const LoginWithGoogle = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const googleLoginHandler = async (credential: string) => {
     await dispatch(googleLogin(credential)).unwrap();
-    navigate('/');
+    navigate(routes.home);
   };
   return (
     <>

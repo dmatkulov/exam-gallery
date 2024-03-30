@@ -17,7 +17,7 @@ const Gallery: React.FC = () => {
   return (
     <>
       {isLoading && <CircularProgress />}
-      <Box>
+      <Box sx={{ height: 800, overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
           {gallery.map((item) => (
             <GalleryList key={item._id} item={item} />
