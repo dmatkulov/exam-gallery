@@ -13,7 +13,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cors());
 
-app.use('/auth', usersRouter);
+app.use('/users', usersRouter);
 app.use('/gallery', galleriesRouter);
 
 const run = async () => {

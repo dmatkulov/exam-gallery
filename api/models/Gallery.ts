@@ -17,7 +17,7 @@ const GallerySchema = new mongoose.Schema<GalleryFields>({
   },
   title: {
     type: String,
-    required: [true, 'Image title must be provided'],
+    required: [true, 'Title title must be provided'],
   },
   image: {
     type: String,

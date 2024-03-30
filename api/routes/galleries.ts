@@ -13,6 +13,7 @@ galleriesRouter.get('/', async (req, res, next) => {
   try {
     const authorId = req.query.author as string;
     let response;
+
     if (authorId) {
       try {
         new Types.ObjectId(authorId);
@@ -27,7 +28,10 @@ galleriesRouter.get('/', async (req, res, next) => {
 
       const user = await User.findById(authorId).select('displayName');
 
-      return res.send({ user, result });
+      response = {
+        user,
+        result,
+      };
     } else {
       response = await Gallery.find().populate({
         path: 'user',
